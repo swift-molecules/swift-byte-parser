@@ -8,8 +8,8 @@ import Testing
 // swift-cursor-primitives' own test suite; this file tests the byte-domain
 // surface that lives ONLY in byte-parser-primitives:
 //
-//   • `starts(with:)`               — typed-prefix match against a Byte sequence
-//   • `copyToOwned() -> Byte.Input` — borrowed → owned conversion
+//   • `starts(with:)`         — typed-prefix match against a Byte sequence
+//   • `owned() -> Byte.Input` — borrowed → owned conversion
 //
 // Plus one integration test exercising the byte parser pattern (Cursor<Byte>
 // consumed for a fixed-width-integer parse) to confirm the substrate works
@@ -20,14 +20,20 @@ import Testing
 
 @Suite
 struct `Cursor Byte Tests` {
-    @Suite struct `Starts With` {}
-    @Suite struct `Copy To Owned` {}
+    @Suite struct Unit {
+        @Suite struct `Starts With` {}
+        @Suite struct `Copy To Owned` {}
+    }
+    @Suite struct `Edge Case` {
+        @Suite struct `Starts With` {}
+        @Suite struct `Copy To Owned` {}
+    }
     @Suite struct Integration {}
 }
 
 // MARK: - starts(with:)
 
-extension `Cursor Byte Tests`.`Starts With` {
+extension `Cursor Byte Tests`.Unit.`Starts With` {
 
     @Test
     func `returns true for matching prefix`() {
@@ -54,6 +60,9 @@ extension `Cursor Byte Tests`.`Starts With` {
 
         #expect(!result)
     }
+}
+
+extension `Cursor Byte Tests`.`Edge Case`.`Starts With` {
 
     @Test
     func `returns true for empty prefix on any view`() {
@@ -82,9 +91,9 @@ extension `Cursor Byte Tests`.`Starts With` {
     }
 }
 
-// MARK: - copyToOwned()
+// MARK: - owned()
 
-extension `Cursor Byte Tests`.`Copy To Owned` {
+extension `Cursor Byte Tests`.Unit.`Copy To Owned` {
 
     @Test
     func `creates independent owned input from fresh view`() {
@@ -93,13 +102,16 @@ extension `Cursor Byte Tests`.`Copy To Owned` {
         let (ownedCount, ownedFirst) = unsafe bytes.withUnsafeBufferPointer { buffer in
             let span = unsafe Span(_unsafeElements: buffer)
             let view = Cursor<Byte>(span)
-            let owned = view.copyToOwned()
+            let owned = view.owned()
             return (owned.count, owned.first)
         }
 
         #expect(ownedCount == 4)
         #expect(ownedFirst == 0x01)
     }
+}
+
+extension `Cursor Byte Tests`.`Edge Case`.`Copy To Owned` {
 
     @Test
     func `copies only the remaining bytes after partial consumption`() {
@@ -110,7 +122,7 @@ extension `Cursor Byte Tests`.`Copy To Owned` {
             var view = Cursor<Byte>(span)
 
             _ = view.consume()
-            let owned = view.copyToOwned()
+            let owned = view.owned()
 
             return (owned.count, owned.first)
         }

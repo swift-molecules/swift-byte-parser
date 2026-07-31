@@ -27,6 +27,12 @@ private func mismatch(for expected: Byte) -> Byte {
 
 @Suite
 struct `Byte.Input Concurrency Tests` {
+    @Suite struct Unit {}
+    @Suite struct `Edge Case` {}
+    @Suite struct Integration {}
+}
+
+extension `Byte.Input Concurrency Tests`.Integration {
 
     @Test(arguments: [4, 16])
     func `concurrent backtracking parses never disturb the shared source`(width: Int) async {
@@ -41,10 +47,22 @@ struct `Byte.Input Concurrency Tests` {
                         // The backtracking discipline: the failing attempt runs on
                         // a COPY and is discarded; the slice itself never rewinds.
                         var probe = mine
-                        let failed = (try? Byte.Parser<Byte.Input>(mismatch(for: expected)).parse(&probe)) == nil
+                        let failed: Bool
+                        do throws(Byte.Parser<Byte.Input>.Failure) {
+                            try Byte.Parser<Byte.Input>(mismatch(for: expected)).parse(&probe)
+                            failed = false
+                        } catch {
+                            failed = true
+                        }
                         good = good && failed
                         good = good && (mine.first == expected)
-                        let advanced = (try? Byte.Parser<Byte.Input>(expected).parse(&mine)) != nil
+                        let advanced: Bool
+                        do throws(Byte.Parser<Byte.Input>.Failure) {
+                            try Byte.Parser<Byte.Input>(expected).parse(&mine)
+                            advanced = true
+                        } catch {
+                            advanced = false
+                        }
                         good = good && advanced
                     }
                     return good && mine.isEmpty  // consumed the whole pattern
@@ -65,12 +83,18 @@ struct `Byte.Input Concurrency Tests` {
         let pattern = makePattern(repeats: 8)
         let source = Byte.Input(pattern)
         let outcomes = await withTaskGroup(of: Bool.self, returning: [Bool].self) { group in
-            for depth in 0..<16 {
+            (0..<16).forEach { depth in
                 group.addTask {
                     var mine = source  // sibling slice over the same box
                     var good = true
-                    for i in 0..<depth {  // consume exactly `depth` bytes
-                        let advanced = (try? Byte.Parser<Byte.Input>(pattern[i]).parse(&mine)) != nil
+                    (0..<depth).forEach { i in  // consume exactly `depth` bytes
+                        let advanced: Bool
+                        do throws(Byte.Parser<Byte.Input>.Failure) {
+                            try Byte.Parser<Byte.Input>(pattern[i]).parse(&mine)
+                            advanced = true
+                        } catch {
+                            advanced = false
+                        }
                         good = good && advanced
                     }
                     good = good && (mine.first == pattern[depth])

@@ -15,7 +15,7 @@ public import Span_Protocol_Primitives
 // `DomainTag`. This file adds the genuinely byte-specific surface:
 //
 //   • `starts(with:)` — typed-prefix match against any `Byte`-shaped sequence
-//   • `copyToOwned() -> Byte.Input` — borrowed → owned conversion
+//   • `owned() -> Byte.Input` — borrowed → owned conversion
 
 extension Cursor where DomainTag == Byte {
     /// Checks if the remaining bytes start with the given prefix.
@@ -43,7 +43,7 @@ extension Cursor where DomainTag == Byte {
     ///
     /// - Returns: An owned `Byte.Input` containing the remaining bytes.
     @inlinable
-    public func copyToOwned() -> Byte.Input {
+    public func owned() -> Byte.Input {
         var bytes: [Byte] = []
         bytes.reserveCapacity(count)
         var offset: Tagged<Byte, Cardinal> = .zero

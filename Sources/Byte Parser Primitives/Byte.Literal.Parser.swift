@@ -12,12 +12,6 @@ public import Parser_EndOfInput_Primitives
 public import Parser_Match_Primitives
 public import Parser_Primitives
 
-extension Byte {
-    /// Namespace for byte-literal types — fixed byte sequences interpreted
-    /// as literal patterns to match or emit.
-    public enum Literal {}
-}
-
 extension Byte.Literal {
     /// A parser that matches a specific byte sequence.
     ///
