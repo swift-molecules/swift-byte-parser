@@ -57,7 +57,9 @@ extension Byte.Literal.Parser: Parser_Primitives.Parser.`Protocol` {
     /// The parser produces no value on success.
     public typealias Output = Void
     /// The parser's failure: end-of-input, or a byte mismatch.
-    public typealias Failure = Either<Parser_Primitives.Parser.EndOfInput.Error, Parser_Primitives.Parser.Match.Error>
+    public typealias Failure = Either<
+        Parser_Primitives.Parser.EndOfInput.Error, Parser_Primitives.Parser.Match.Error
+    >
     /// This is a primitive parser; it has no derived body.
     public typealias Body = Never
 
@@ -66,14 +68,21 @@ extension Byte.Literal.Parser: Parser_Primitives.Parser.`Protocol` {
     public func parse(_ input: inout Input) throws(Failure) {
         for expected in bytes {
             guard !input.isEmpty else {
-                throw .left(.unexpected(expected: "byte 0x\(String(expected.underlying, radix: 16, uppercase: true))"))
+                throw .left(
+                    .unexpected(
+                        expected:
+                            "byte 0x\(String(expected.underlying, radix: 16, uppercase: true))"
+                    )
+                )
             }
             // swift-format-ignore: NeverUseForceTry
             // Safe: `isEmpty` was just checked above — `advance()` only throws `.empty`.
             // swiftlint:disable:next force_try
             let actual = try! input.advance()
             guard actual == expected else {
-                throw .right(.byteMismatch(expected: [expected.underlying], found: [actual.underlying]))
+                throw .right(
+                    .byteMismatch(expected: [expected.underlying], found: [actual.underlying])
+                )
             }
         }
     }

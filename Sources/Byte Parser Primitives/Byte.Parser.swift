@@ -41,7 +41,9 @@ extension Byte.Parser: Parser_Primitives.Parser.`Protocol` {
     /// The parser produces no value on success.
     public typealias Output = Void
     /// The parser's failure: end-of-input, or a byte mismatch.
-    public typealias Failure = Either<Parser_Primitives.Parser.EndOfInput.Error, Parser_Primitives.Parser.Match.Error>
+    public typealias Failure = Either<
+        Parser_Primitives.Parser.EndOfInput.Error, Parser_Primitives.Parser.Match.Error
+    >
     /// This is a primitive parser; it has no derived body.
     public typealias Body = Never
 
@@ -49,7 +51,11 @@ extension Byte.Parser: Parser_Primitives.Parser.`Protocol` {
     @inlinable
     public func parse(_ input: inout Input) throws(Failure) {
         guard !input.isEmpty else {
-            throw .left(.unexpected(expected: "byte 0x\(String(expected.underlying, radix: 16, uppercase: true))"))
+            throw .left(
+                .unexpected(
+                    expected: "byte 0x\(String(expected.underlying, radix: 16, uppercase: true))"
+                )
+            )
         }
         // swift-format-ignore: NeverUseForceTry
         // Safe: `isEmpty` was just checked above — `advance()` only throws `.empty`.
