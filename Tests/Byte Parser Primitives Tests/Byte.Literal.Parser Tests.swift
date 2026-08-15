@@ -15,7 +15,9 @@ struct `Byte.Literal.Parser Tests` {
 
 extension `Byte.Literal.Parser Tests`.Unit {
     @Test
-    func `matches byte sequence and advances input`() throws(Byte.Literal.Parser<Byte.Input>.Failure) {
+    func `matches byte sequence and advances input`() throws(Byte.Literal.Parser<Byte.Input>
+        .Failure)
+    {
         let parser = Byte.Literal.Parser<Byte.Input>([0x48, 0x65, 0x6C])
         var input = Byte.Input([0x48, 0x65, 0x6C, 0x6C, 0x6F])
 
@@ -25,7 +27,9 @@ extension `Byte.Literal.Parser Tests`.Unit {
     }
 
     @Test
-    func `string literal construction matches UTF-8 bytes`() throws(Byte.Literal.Parser<Byte.Input>.Failure) {
+    func `string literal construction matches UTF-8 bytes`() throws(Byte.Literal.Parser<Byte.Input>
+        .Failure)
+    {
         let parser: Byte.Literal.Parser<Byte.Input> = "OK"
         var input = Byte.Input(utf8: "OK!")
 
@@ -49,7 +53,8 @@ extension `Byte.Literal.Parser Tests`.Unit {
 
 extension `Byte.Literal.Parser Tests`.`Edge Case` {
     @Test
-    func `empty literal matches without consuming`() throws(Byte.Literal.Parser<Byte.Input>.Failure) {
+    func `empty literal matches without consuming`() throws(Byte.Literal.Parser<Byte.Input>.Failure)
+    {
         let parser = Byte.Literal.Parser<Byte.Input>([])
         var input = Byte.Input([0x01, 0x02])
 
@@ -83,7 +88,9 @@ extension `Byte.Literal.Parser Tests`.`Edge Case` {
 
 extension `Byte.Literal.Parser Tests`.Integration {
     @Test
-    func `Byte.Literal.Parser composes with Byte.Parser`() throws(Byte.Literal.Parser<Byte.Input>.Failure) {
+    func `Byte.Literal.Parser composes with Byte.Parser`() throws(Byte.Literal.Parser<Byte.Input>
+        .Failure)
+    {
         let prefix: Byte.Literal.Parser<Byte.Input> = "hi"
         let suffix = Byte.Parser<Byte.Input>(0x21)  // '!'
         var input = Byte.Input(utf8: "hi!")

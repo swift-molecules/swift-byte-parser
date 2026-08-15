@@ -51,7 +51,9 @@ extension `Byte.Parser Tests`.Unit {
     }
 
     @Test
-    func `Byte literal flows through ExpressibleByIntegerLiteral`() throws(Byte.Parser<Byte.Input>.Failure) {
+    func `Byte literal flows through ExpressibleByIntegerLiteral`() throws(Byte.Parser<Byte.Input>
+        .Failure)
+    {
         // 0x55 must infer as Byte (not UInt8) at the call site.
         let parser = Byte.Parser<Byte.Input>(0x55)
         var input = Byte.Input([0x55])
