@@ -1,15 +1,15 @@
-// swift-tools-version: 6.3.3
+// swift-tools-version: 6.4
 
 import PackageDescription
 
 let package = Package(
     name: "swift-byte-parser-primitives",
     platforms: [
-        .macOS("27"),
-        .iOS("27"),
-        .tvOS("27"),
-        .watchOS("27"),
-        .visionOS("27"),
+        .macOS(.v27),
+        .iOS(.v27),
+        .tvOS(.v27),
+        .watchOS(.v27),
+        .visionOS(.v27),
     ],
     products: [
         .library(
@@ -22,28 +22,76 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/swift-primitives/swift-parser-primitives.git", branch: "main"),
+        .package(
+            url: "https://github.com/swift-primitives/swift-parser-primitives.git",
+            branch: "main"
+        ),
         // W5-4: Byte.Input = Input.Slice<Array<Column.Shared<Byte>>> — the
         // CoW value-semantic column. The column vocabulary (Column.Shared)
         // plus the modules its expansion chains conformances through
         // (Shared: Span.Protocol → Buffer.Linear: Span.Protocol) are direct
         // deps; the W3 transitive-collision overrides that SwiftPM now flags
         // "not used by any target" are pruned (W3-F-7 residue).
-        .package(url: "https://github.com/swift-primitives/swift-byte-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-either-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-input-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-array-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-column-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-ownership-shared-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-buffer-linear-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-storage-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-memory-heap-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-memory-allocation-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-cursor-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-memory-cursor-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-index-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-collection-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-span-primitives.git", branch: "main"),
+        .package(
+            url: "https://github.com/swift-primitives/swift-byte-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-either-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-input-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-array-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-column-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-ownership-shared-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-buffer-linear-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-storage-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-memory-heap-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-memory-allocation-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-cursor-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-memory-cursor-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-index-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-collection-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-span-primitives.git",
+            branch: "main"
+        ),
     ],
     targets: [
         .target(
@@ -54,7 +102,10 @@ let package = Package(
                 .product(name: "Parser EndOfInput Primitives", package: "swift-parser-primitives"),
                 .product(name: "Parser Take Primitives", package: "swift-parser-primitives"),
                 .product(name: "Byte Primitives", package: "swift-byte-primitives"),
-                .product(name: "Byte Primitives Standard Library Integration", package: "swift-byte-primitives"),
+                .product(
+                    name: "Byte Primitives Standard Library Integration",
+                    package: "swift-byte-primitives"
+                ),
                 .product(name: "Either Primitives", package: "swift-either-primitives"),
                 .product(name: "Input Primitives", package: "swift-input-primitives"),
                 .product(name: "Array Primitives", package: "swift-array-primitives"),
@@ -67,19 +118,37 @@ let package = Package(
                 // modules MemberImportVisibility demands for the chained
                 // conformances of Byte.Input's base column.
                 .product(name: "Column Primitives", package: "swift-column-primitives"),
-                .product(name: "Ownership Shared Primitive", package: "swift-ownership-shared-primitives"),
-                .product(name: "Buffer Linear Primitive", package: "swift-buffer-linear-primitives"),
-                .product(name: "Buffer Linear Primitives", package: "swift-buffer-linear-primitives"),
-                .product(name: "Storage Contiguous Primitives", package: "swift-storage-primitives"),
+                .product(
+                    name: "Ownership Shared Primitive",
+                    package: "swift-ownership-shared-primitives"
+                ),
+                .product(
+                    name: "Buffer Linear Primitive",
+                    package: "swift-buffer-linear-primitives"
+                ),
+                .product(
+                    name: "Buffer Linear Primitives",
+                    package: "swift-buffer-linear-primitives"
+                ),
+                .product(
+                    name: "Storage Contiguous Primitives",
+                    package: "swift-storage-primitives"
+                ),
                 .product(name: "Memory Heap Primitives", package: "swift-memory-heap-primitives"),
                 // The `Shared` column's heap-buffer backing surfaces
                 // `Memory.Allocator: Region`; the carrier spelling makes that
                 // conformance load-bearing at this file, so MemberImportVisibility
                 // demands the allocator module directly.
-                .product(name: "Memory Allocator Primitive", package: "swift-memory-allocation-primitives"),
+                .product(
+                    name: "Memory Allocator Primitive",
+                    package: "swift-memory-allocation-primitives"
+                ),
                 .product(name: "Cursor Primitives", package: "swift-cursor-primitives"),
                 .product(name: "Cursor Primitive", package: "swift-cursor-primitives"),
-                .product(name: "Memory Cursor Primitives", package: "swift-memory-cursor-primitives"),
+                .product(
+                    name: "Memory Cursor Primitives",
+                    package: "swift-memory-cursor-primitives"
+                ),
                 .product(name: "Index Primitives", package: "swift-index-primitives"),
                 .product(name: "Collection Primitives", package: "swift-collection-primitives"),
                 // W3 PRUNE: Swift.Span: Span.`Protocol` conformance for
