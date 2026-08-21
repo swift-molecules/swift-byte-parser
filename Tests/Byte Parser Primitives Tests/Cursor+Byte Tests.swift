@@ -1,23 +1,6 @@
 import Byte_Parser_Primitives_Test_Support
 import Testing
 
-// MARK: - Cursor<Byte> byte-domain extension tests
-//
-// `Cursor<Byte>` is the institute's borrowed-bytes cursor. The Cursor-native
-// API (peek/peek(at:)/consume/advance/position/isAtEnd) is exercised by
-// swift-cursor-primitives' own test suite; this file tests the byte-domain
-// surface that lives ONLY in byte-parser-primitives:
-//
-//   • `starts(with:)`         — typed-prefix match against a Byte sequence
-//   • `owned() -> Byte.Input` — borrowed → owned conversion
-//
-// Plus one integration test exercising the byte parser pattern (Cursor<Byte>
-// consumed for a fixed-width-integer parse) to confirm the substrate works
-// end-to-end at the byte-parser-primitives layer.
-//
-// Note: `Cursor<Byte>` is `~Copyable` and `~Escapable`, so tests must extract
-// values before using `#expect` since the macro doesn't support these types.
-
 @Suite
 struct `Cursor Byte Tests` {
     @Suite struct Unit {
@@ -30,8 +13,6 @@ struct `Cursor Byte Tests` {
     }
     @Suite struct Integration {}
 }
-
-// MARK: - starts(with:)
 
 extension `Cursor Byte Tests`.Unit.`Starts With` {
 
@@ -91,8 +72,6 @@ extension `Cursor Byte Tests`.`Edge Case`.`Starts With` {
     }
 }
 
-// MARK: - owned()
-
 extension `Cursor Byte Tests`.Unit.`Copy To Owned` {
 
     @Test
@@ -131,8 +110,6 @@ extension `Cursor Byte Tests`.`Edge Case`.`Copy To Owned` {
         #expect(ownedFirst == 0x02)
     }
 }
-
-// MARK: - Integration
 
 extension `Cursor Byte Tests`.Integration {
 

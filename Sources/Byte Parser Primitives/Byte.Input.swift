@@ -1,21 +1,3 @@
-// Byte.Input.swift
-//
-// `Byte.Input` is the canonical byte-stream input type for byte-domain
-// parsers — `Byte.Parser`, `Byte.Literal.Parser`, and any future
-// byte-domain parser combinators. Per LargerDomain.Subdomain, Byte is the
-// data domain and Input is the cursor-role within it.
-//
-// The typealias lives in `swift-byte-parser-primitives`, NOT in
-// `swift-byte-primitives`. byte-primitives stays a pure value layer
-// (struct + Byte.Protocol + bitwise + stdlib conformances) with no
-// input/parser dep; consumers that only need the byte value type pull
-// byte-primitives without dragging input infrastructure.
-//
-// Input and Parser are PEERS — neither is a sub-domain of the other.
-// They compose via type parameters: `Byte.Parser<Input>` is generic
-// over any `Input_Primitives.Input.Streaming` conformer. `Byte.Input` is the
-// canonical concrete choice for byte-array streams.
-
 public import Array_Primitive
 public import Array_Primitives
 public import Buffer_Linear_Primitive
@@ -25,51 +7,19 @@ import Column_Primitives
 public import Input_Primitives
 public import Memory_Allocator_Primitive
 public import Memory_Heap_Primitives
-// The column vocabulary is pure typealiases (zero re-exports): conformances of
-// the column spelling resolve against the modules that DECLARE them, and
-// MemberImportVisibility requires those modules imported by this file. The input
-// rides the `Shared` (CoW) column through the CARRIER spelling
-// `Array<Byte>.Shared` ([DS-025]/[DS-028] — the carrier keeps `S`
-// Copyable and the element `Byte`, preserving backtracking and `.append(byte)`).
-// `Column.Shared<Byte>` expands to `Ownership.Shared<Byte, heap-buffer>`, so the seam ops
-// need BOTH the Shared column's own store/buffer/Span.Protocol conformances
-// (Ownership_Shared_Primitive) AND its heap-buffer backing's — the linear buffer's
-// (Buffer_Linear_Primitive), the contiguous storage's
-// (Storage_Contiguous_Primitives), Memory.Allocator: Region
-// (Memory_Allocator_Primitive), and Memory.Heap: Region (Memory_Heap_Primitives).
 public import Ownership_Shared_Primitive
 public import Storage_Contiguous_Primitives
 
 extension Byte {
-    /// The canonical byte-stream input for byte-domain parsers.
-    ///
-    /// Built on `Input.Slice<Array<Byte>.Shared>` — a zero-copy view
-    /// over a byte array on the `Shared` (CoW value-semantic) column. Conforms
-    /// to `Input_Primitives.Input.Streaming` (and the stronger `Input.Protocol`
-    /// for backtracking-capable parsers) because `Array<Byte>.Shared`
-    /// is `Collection.\`Protocol\``-conforming (the column vends a span, so the
-    /// span-bridged Collection lattice chains through) and `Copyable` (the CoW
-    /// column over a `Copyable` element — `Input.Slice` requires a `Copyable`
-    /// `Base`, and parser backtracking copies inputs, so value semantics are
-    /// load-bearing here).
-    ///
-    /// ```swift
-    /// var input = Byte.Input([0x48, 0x65, 0x6C])
-    /// try Byte.Parser<Byte.Input>(0x48).parse(&input)
-    /// // input now cursors past 0x48 to 0x65
-    /// ```
+
     public typealias Input = Input_Primitives.Input.Slice<Array<Byte>.Shared>
 }
 
-// MARK: - Convenience initializers on Byte.Input
-
 extension Input_Primitives.Input.Slice where Base == Array<Byte>.Shared {
-    /// Creates a byte-stream input from `[Byte]`.
+
     @inlinable
     public init(_ bytes: [Byte]) {
-        // `Array` here is the institute front-door alias ([DS-028]), not Swift.Array —
-        // `[Byte]` sugar would resolve to the stdlib type, which has no `.Shared`.
-        // swiftlint:disable:next syntactic_sugar
+
         var storage = Array<Byte>.Shared()
         for byte in bytes {
             storage.append(byte)
@@ -77,25 +27,15 @@ extension Input_Primitives.Input.Slice where Base == Array<Byte>.Shared {
         self = Input.Slice(storage)
     }
 
-    /// Creates an input cursor from any byte collection.
-    ///
-    /// - Parameter bytes: The bytes to parse.
     @inlinable
     public init<Bytes: Swift.Collection>(_ bytes: Bytes) where Bytes.Element == Byte {
         self.init(Swift.Array(bytes))
     }
 
-    /// Creates a byte-stream input from a stdlib `[UInt8]`.
-    ///
-    /// Stdlib-interop forwarder per [API-BYTE-006] — carries
-    /// `@_disfavoredOverload` so the `[Byte]` primary wins when both forms
-    /// satisfy the call site.
     @_disfavoredOverload
     @inlinable
     public init(_ bytes: [UInt8]) {
-        // `Array` here is the institute front-door alias ([DS-028]), not Swift.Array —
-        // `[Byte]` sugar would resolve to the stdlib type, which has no `.Shared`.
-        // swiftlint:disable:next syntactic_sugar
+
         var storage = Array<Byte>.Shared()
         for byte in bytes {
             storage.append(Byte(byte))
@@ -103,40 +43,23 @@ extension Input_Primitives.Input.Slice where Base == Array<Byte>.Shared {
         self = Input.Slice(storage)
     }
 
-    /// Creates a byte-stream input from a string's UTF-8 representation.
     @inlinable
     public init(utf8 string: Swift.String) {
         self.init([UInt8](string.utf8))
     }
 
-    /// Creates an input cursor from any UInt8 collection.
-    ///
-    /// Stdlib-interop forwarder per [API-BYTE-006].
     @_disfavoredOverload
     @inlinable
     public init<Bytes: Swift.Collection>(_ bytes: Bytes) where Bytes.Element == UInt8 {
         self.init(Swift.Array(bytes))
     }
 
-    /// Creates an input cursor from a UInt8 array slice.
-    ///
-    /// Stdlib-interop forwarder per [API-BYTE-006].
     @_disfavoredOverload
     @inlinable
     public init(_ bytes: ArraySlice<UInt8>) {
         self.init(Swift.Array(bytes))
     }
 
-    /// Checks if the remaining bytes start with the given prefix.
-    ///
-    /// Delegates to ``Input/Access/Random``'s `access.starts(with:)` Property
-    /// view — the canonical prefix-match operation lives on the Random-access
-    /// capability protocol. This wrapper preserves the call-site shape
-    /// `input.starts(with:)`; new call sites SHOULD prefer
-    /// `input.access.starts(with: prefix)` directly.
-    ///
-    /// - Parameter prefix: The prefix to check.
-    /// - Returns: `true` if the remaining bytes start with the prefix.
     @inlinable
     public func starts<Prefix: Swift.Collection>(with prefix: Prefix) -> Bool
     where Prefix.Element == Byte {

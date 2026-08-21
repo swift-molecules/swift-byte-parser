@@ -1,8 +1,6 @@
 import Byte_Parser_Primitives_Test_Support
 import Testing
 
-// MARK: - Test Suite Structure
-
 @Suite
 struct `Byte.Literal.Parser Tests` {
     @Suite struct Unit {}
@@ -10,8 +8,6 @@ struct `Byte.Literal.Parser Tests` {
     @Suite struct Integration {}
     @Suite(.serialized) struct Performance {}
 }
-
-// MARK: - Unit Tests
 
 extension `Byte.Literal.Parser Tests`.Unit {
     @Test
@@ -49,8 +45,6 @@ extension `Byte.Literal.Parser Tests`.Unit {
     }
 }
 
-// MARK: - Edge Case Tests
-
 extension `Byte.Literal.Parser Tests`.`Edge Case` {
     @Test
     func `empty literal matches without consuming`() throws(Byte.Literal.Parser<Byte.Input>.Failure)
@@ -84,15 +78,13 @@ extension `Byte.Literal.Parser Tests`.`Edge Case` {
     }
 }
 
-// MARK: - Integration Tests
-
 extension `Byte.Literal.Parser Tests`.Integration {
     @Test
     func `Byte.Literal.Parser composes with Byte.Parser`() throws(Byte.Literal.Parser<Byte.Input>
         .Failure)
     {
         let prefix: Byte.Literal.Parser<Byte.Input> = "hi"
-        let suffix = Byte.Parser<Byte.Input>(0x21)  // '!'
+        let suffix = Byte.Parser<Byte.Input>(0x21)
         var input = Byte.Input(utf8: "hi!")
 
         try prefix.parse(&input)

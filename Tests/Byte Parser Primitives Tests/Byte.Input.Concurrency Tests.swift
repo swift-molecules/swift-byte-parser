@@ -1,15 +1,6 @@
 import Byte_Parser_Primitives_Test_Support
 import Testing
 
-// W3 rider — BYTE-PARSER's own composition under concurrency (arc-1,
-// GOAL-tower-arc-shared-soundness §W3): `Byte.Input` is
-// `Input.Slice<Array<Byte>.Shared>` (`7a057d5`) — a zero-copy slice
-// whose VALUE SEMANTICS carry parser backtracking (attempts run on copies;
-// only successes write back). The rider runs that exact discipline across
-// tasks: every task backtrack-parses its own slice copy of ONE shared column
-// while the source slice must stay byte-for-byte untouched. Reads share the
-// box; no slice mutation ever reaches another slice.
-
 private let basePattern: [Byte] = [0x41, 0x42, 0x43, 0x44]
 
 private func makePattern(repeats: Int) -> [Byte] {
@@ -19,8 +10,6 @@ private func makePattern(repeats: Int) -> [Byte] {
     return out
 }
 
-/// A byte that can never match `expected` (comparison-built — the byte domain
-/// forbids arithmetic on `Byte`).
 private func mismatch(for expected: Byte) -> Byte {
     expected == 0x00 ? 0x01 : 0x00
 }
@@ -41,11 +30,10 @@ extension `Byte.Input Concurrency Tests`.Integration {
         let outcomes = await withTaskGroup(of: Bool.self, returning: [Bool].self) { group in
             for _ in 0..<width {
                 group.addTask {
-                    var mine = source  // slice copy: shares the column box
+                    var mine = source
                     var good = true
                     for expected in pattern {
-                        // The backtracking discipline: the failing attempt runs on
-                        // a COPY and is discarded; the slice itself never rewinds.
+
                         var probe = mine
                         let failed: Bool
                         do throws(Byte.Parser<Byte.Input>.Failure) {
@@ -65,7 +53,7 @@ extension `Byte.Input Concurrency Tests`.Integration {
                         }
                         good = good && advanced
                     }
-                    return good && mine.isEmpty  // consumed the whole pattern
+                    return good && mine.isEmpty
                 }
             }
             var out: [Bool] = []
@@ -74,7 +62,7 @@ extension `Byte.Input Concurrency Tests`.Integration {
         }
         #expect(outcomes.count == width)
         #expect(outcomes.allSatisfy { $0 })
-        #expect(source.first == 0x41)  // the source slice never moved
+        #expect(source.first == 0x41)
         #expect(!source.isEmpty)
     }
 
@@ -85,9 +73,9 @@ extension `Byte.Input Concurrency Tests`.Integration {
         let outcomes = await withTaskGroup(of: Bool.self, returning: [Bool].self) { group in
             (0..<16).forEach { depth in
                 group.addTask {
-                    var mine = source  // sibling slice over the same box
+                    var mine = source
                     var good = true
-                    (0..<depth).forEach { i in  // consume exactly `depth` bytes
+                    (0..<depth).forEach { i in
                         let advanced: Bool
                         do throws(Byte.Parser<Byte.Input>.Failure) {
                             try Byte.Parser<Byte.Input>(pattern[i]).parse(&mine)
@@ -107,6 +95,6 @@ extension `Byte.Input Concurrency Tests`.Integration {
         }
         #expect(outcomes.count == 16)
         #expect(outcomes.allSatisfy { $0 })
-        #expect(source.first == 0x41)  // divergence stayed value-local
+        #expect(source.first == 0x41)
     }
 }

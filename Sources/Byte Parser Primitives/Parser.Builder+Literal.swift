@@ -1,25 +1,10 @@
-// Parser.Builder+Literal.swift
-//
-// Byte-specific `Parser.Builder` and `Parser.Take.Builder` `buildExpression`
-// overloads enabling bare string literals and byte-array literals inside
-// declarative parser bodies.
-//
-// String literals infer as `Byte.Literal.Parser` (the byte-domain parser
-// for literal byte sequences); byte-array literals are `[Byte]`. The
-// overloads bridge SwiftPM Result Builder's spec-mirroring naming
-// (`buildExpression` — exempt per [API-NAME-002] spec-mirroring) into the
-// byte-domain types.
-
 public import Byte_Primitives
 public import Parser_Primitives
 public import Parser_Take_Primitives
 
-// MARK: - Parser.Builder String Literal Support
-
 extension Parser_Primitives.Parser.Builder
 where Input: Input_Primitives.Input.Streaming, Input.Element == Byte {
-    /// Enables bare string literals as `Byte.Literal.Parser` in `var body`
-    /// builders.
+
     @inlinable
     public static func buildExpression(
         _ literal: Byte.Literal.Parser<Input>
@@ -27,7 +12,6 @@ where Input: Input_Primitives.Input.Streaming, Input.Element == Byte {
         literal
     }
 
-    /// Re-declared generic pass-through for the constrained extension.
     @inlinable
     public static func buildExpression<P: Parser_Primitives.Parser.`Protocol`>(
         _ parser: P
@@ -36,29 +20,17 @@ where Input: Input_Primitives.Input.Streaming, Input.Element == Byte {
     }
 }
 
-// MARK: - Parser.Builder Byte Array Literal Support
-
 extension Parser_Primitives.Parser.Builder where Input == ArraySlice<Byte> {
-    /// Converts a `[Byte]` array literal to a parser.
+
     @inlinable
     public static func buildExpression(_ bytes: [Byte]) -> [Byte] {
         bytes
     }
 }
 
-// MARK: - Parser.Take.Builder String Literal Support
-
 extension Parser_Primitives.Parser.Take.Builder
 where Input: Input_Primitives.Input.Streaming, Input.Element == Byte {
-    /// Enables bare string literals as `Byte.Literal.Parser` in builder bodies.
-    ///
-    /// ```swift
-    /// Parser.Take.Sequence {
-    ///     ASCII.Decimal.Parser<_, UInt16>()
-    ///     ":"                              // ← inferred as Byte.Literal.Parser<Input>
-    ///     ASCII.Decimal.Parser<_, UInt16>()
-    /// }
-    /// ```
+
     @inlinable
     public static func buildExpression(
         _ literal: Byte.Literal.Parser<Input>
@@ -66,11 +38,6 @@ where Input: Input_Primitives.Input.Streaming, Input.Element == Byte {
         literal
     }
 
-    /// Re-declared generic pass-through for the constrained extension.
-    ///
-    /// Without this, the `Byte.Literal.Parser` overload above would shadow
-    /// the generic `buildExpression` from the unconstrained extension,
-    /// causing non-literal parsers to fail type-checking.
     @inlinable
     public static func buildExpression<P: Parser_Primitives.Parser.`Protocol`>(
         _ parser: P
@@ -79,16 +46,8 @@ where Input: Input_Primitives.Input.Streaming, Input.Element == Byte {
     }
 }
 
-// MARK: - Parser.Take.Builder Byte Array Literal Support
-
 extension Parser_Primitives.Parser.Take.Builder where Input == ArraySlice<Byte> {
-    /// Converts a `[Byte]` array literal to a parser.
-    ///
-    /// This enables using byte arrays directly in `Parser.Take.Sequence`
-    /// builders. Relocated from `swift-parser-primitives` 2026-05-19 as
-    /// part of the L1 byte-domain cleanup (Tier B); follows the Wave 3
-    /// byte-extraction pattern that placed byte-specific buildExpression
-    /// overloads in the byte-aware target.
+
     @inlinable
     public static func buildExpression(_ bytes: [Byte]) -> [Byte] {
         bytes

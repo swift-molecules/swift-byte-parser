@@ -1,13 +1,6 @@
 import Byte_Parser_Primitives_Test_Support
 import Testing
 
-// MARK: - Test Suite Structure
-//
-// Compound name backticked per the institute test-suite convention
-// (matches swift-carrier-primitives' `Carrier Tests` — backticked
-// compound names are accepted by [SWIFT-TEST-002]; bare compound names
-// are not).
-
 @Suite
 struct `Byte.Parser Tests` {
     @Suite struct Unit {}
@@ -15,8 +8,6 @@ struct `Byte.Parser Tests` {
     @Suite struct Integration {}
     @Suite(.serialized) struct Performance {}
 }
-
-// MARK: - Unit Tests
 
 extension `Byte.Parser Tests`.Unit {
     @Test
@@ -54,15 +45,13 @@ extension `Byte.Parser Tests`.Unit {
     func `Byte literal flows through ExpressibleByIntegerLiteral`() throws(Byte.Parser<Byte.Input>
         .Failure)
     {
-        // 0x55 must infer as Byte (not UInt8) at the call site.
+
         let parser = Byte.Parser<Byte.Input>(0x55)
         var input = Byte.Input([0x55])
         try parser.parse(&input)
         #expect(input.isEmpty)
     }
 }
-
-// MARK: - Edge Case Tests
 
 extension `Byte.Parser Tests`.`Edge Case` {
     @Test
@@ -111,8 +100,6 @@ extension `Byte.Parser Tests`.`Edge Case` {
         #expect(input.isEmpty)
     }
 }
-
-// MARK: - Integration Tests
 
 extension `Byte.Parser Tests`.Integration {
     @Test
