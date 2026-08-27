@@ -20,7 +20,7 @@ extension `Cursor Byte Tests`.Unit.`Starts With` {
     func `returns true for matching prefix`() {
         let bytes: [Byte] = [0x01, 0x02, 0x03, 0x04]
 
-        let result = unsafe bytes.withUnsafeBufferPointer { buffer in
+        let result = bytes.withUnsafeBufferPointer { buffer in
             let span = unsafe Span(_unsafeElements: buffer)
             let view = Cursor<Byte>(span)
             return view.starts(with: [0x01, 0x02] as [Byte])
@@ -33,7 +33,7 @@ extension `Cursor Byte Tests`.Unit.`Starts With` {
     func `returns false for non-matching prefix`() {
         let bytes: [Byte] = [0x01, 0x02, 0x03]
 
-        let result = unsafe bytes.withUnsafeBufferPointer { buffer in
+        let result = bytes.withUnsafeBufferPointer { buffer in
             let span = unsafe Span(_unsafeElements: buffer)
             let view = Cursor<Byte>(span)
             return view.starts(with: [0x01, 0x03] as [Byte])
@@ -49,7 +49,7 @@ extension `Cursor Byte Tests`.`Edge Case`.`Starts With` {
     func `returns true for empty prefix on any view`() {
         let bytes: [Byte] = [0x01, 0x02]
 
-        let result = unsafe bytes.withUnsafeBufferPointer { buffer in
+        let result = bytes.withUnsafeBufferPointer { buffer in
             let span = unsafe Span(_unsafeElements: buffer)
             let view = Cursor<Byte>(span)
             return view.starts(with: [] as [Byte])
@@ -62,7 +62,7 @@ extension `Cursor Byte Tests`.`Edge Case`.`Starts With` {
     func `returns false when prefix exceeds remaining`() {
         let bytes: [Byte] = [0x01]
 
-        let result = unsafe bytes.withUnsafeBufferPointer { buffer in
+        let result = bytes.withUnsafeBufferPointer { buffer in
             let span = unsafe Span(_unsafeElements: buffer)
             let view = Cursor<Byte>(span)
             return view.starts(with: [0x01, 0x02] as [Byte])
@@ -78,7 +78,7 @@ extension `Cursor Byte Tests`.Unit.`Copy To Owned` {
     func `creates independent owned input from fresh view`() {
         let bytes: [Byte] = [0x01, 0x02, 0x03, 0x04]
 
-        let (ownedCount, ownedFirst) = unsafe bytes.withUnsafeBufferPointer { buffer in
+        let (ownedCount, ownedFirst) = bytes.withUnsafeBufferPointer { buffer in
             let span = unsafe Span(_unsafeElements: buffer)
             let view = Cursor<Byte>(span)
             let owned = view.owned()
@@ -96,7 +96,7 @@ extension `Cursor Byte Tests`.`Edge Case`.`Copy To Owned` {
     func `copies only the remaining bytes after partial consumption`() {
         let bytes: [Byte] = [0x01, 0x02, 0x03, 0x04]
 
-        let (ownedCount, ownedFirst) = unsafe bytes.withUnsafeBufferPointer { buffer in
+        let (ownedCount, ownedFirst) = bytes.withUnsafeBufferPointer { buffer in
             let span = unsafe Span(_unsafeElements: buffer)
             var view = Cursor<Byte>(span)
 
@@ -117,7 +117,7 @@ extension `Cursor Byte Tests`.Integration {
     func `parse fixed-width integer via Cursor`() {
         let bytes: [Byte] = [0xDE, 0xAD, 0xBE, 0xEF]
 
-        let (value, isAtEnd) = unsafe bytes.withUnsafeBufferPointer { buffer in
+        let (value, isAtEnd) = bytes.withUnsafeBufferPointer { buffer in
             let span = unsafe Span(_unsafeElements: buffer)
             var view = Cursor<Byte>(span)
 

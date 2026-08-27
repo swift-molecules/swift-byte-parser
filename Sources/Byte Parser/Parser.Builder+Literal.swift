@@ -1,9 +1,8 @@
 public import Byte
 public import Parser
-public import Parser_Take
 
-extension Parser.Parser.Builder
-where Input: Input.Input.Streaming, Input.Element == Byte {
+extension Parser.Builder
+where Input: __ParserInput.Streaming, Input.Element == Byte {
 
     @inlinable
     public static func buildExpression(
@@ -13,14 +12,14 @@ where Input: Input.Input.Streaming, Input.Element == Byte {
     }
 
     @inlinable
-    public static func buildExpression<P: Parser.Parser.`Protocol`>(
+    public static func buildExpression<P: Parser.`Protocol`>(
         _ parser: P
     ) -> P where P.Input == Input {
         parser
     }
 }
 
-extension Parser.Parser.Builder where Input == ArraySlice<Byte> {
+extension Parser.Builder where Input == ArraySlice<Byte> {
 
     @inlinable
     public static func buildExpression(_ bytes: [Byte]) -> [Byte] {
@@ -28,8 +27,8 @@ extension Parser.Parser.Builder where Input == ArraySlice<Byte> {
     }
 }
 
-extension Parser.Parser.Take.Builder
-where Input: Input.Input.Streaming, Input.Element == Byte {
+extension Parser.Take.Builder
+where Input: __ParserInput.Streaming, Input.Element == Byte {
 
     @inlinable
     public static func buildExpression(
@@ -39,14 +38,14 @@ where Input: Input.Input.Streaming, Input.Element == Byte {
     }
 
     @inlinable
-    public static func buildExpression<P: Parser.Parser.`Protocol`>(
+    public static func buildExpression<P: Parser.`Protocol`>(
         _ parser: P
     ) -> P where P.Input == Input {
         parser
     }
 }
 
-extension Parser.Parser.Take.Builder where Input == ArraySlice<Byte> {
+extension Parser.Take.Builder where Input == ArraySlice<Byte> {
 
     @inlinable
     public static func buildExpression(_ bytes: [Byte]) -> [Byte] {

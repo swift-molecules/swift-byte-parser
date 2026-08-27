@@ -23,48 +23,31 @@ let package = Package(
     ],
     dependencies: [
         .package(
-            url: "https://github.com/swift-molecules/swift-parser.git",
-            branch: "main"
-        ),
-
-        .package(
-            url: "https://github.com/swift-molecules/swift-byte.git",
+            url: "https://github.com/swift-atoms/swift-parser.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-either.git",
+            url: "https://github.com/swift-atoms/swift-byte.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-input.git",
+            url: "https://github.com/swift-atoms/swift-either.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-array.git",
+            url: "https://github.com/swift-atoms/swift-input.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-column.git",
+            url: "https://github.com/swift-atoms/swift-cardinal.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-ownership-shared.git",
+            url: "https://github.com/swift-atoms/swift-tagged.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-buffer-linear.git",
-            branch: "main"
-        ),
-        .package(
-            url: "https://github.com/swift-molecules/swift-storage.git",
-            branch: "main"
-        ),
-        .package(
-            url: "https://github.com/swift-molecules/swift-memory-heap.git",
-            branch: "main"
-        ),
-        .package(
-            url: "https://github.com/swift-molecules/swift-memory-allocation.git",
+            url: "https://github.com/swift-molecules/swift-byte-ownership.git",
             branch: "main"
         ),
         .package(
@@ -76,15 +59,11 @@ let package = Package(
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-index.git",
+            url: "https://github.com/swift-atoms/swift-collection.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-collection.git",
-            branch: "main"
-        ),
-        .package(
-            url: "https://github.com/swift-molecules/swift-span.git",
+            url: "https://github.com/swift-atoms/swift-span.git",
             branch: "main"
         ),
     ],
@@ -93,62 +72,28 @@ let package = Package(
             name: "Byte Parser",
             dependencies: [
                 .product(name: "Parser", package: "swift-parser"),
-                .product(name: "Parser Match", package: "swift-parser"),
-                .product(name: "Parser EndOfInput", package: "swift-parser"),
-                .product(name: "Parser Take", package: "swift-parser"),
                 .product(name: "Byte", package: "swift-byte"),
-                .product(
-                    name: "Byte Standard Library Integration",
-                    package: "swift-byte"
-                ),
                 .product(name: "Either", package: "swift-either"),
                 .product(name: "Input", package: "swift-input"),
-                .product(name: "Array", package: "swift-array"),
-
-                .product(name: "Array Primitive", package: "swift-array"),
-
-                .product(name: "Column", package: "swift-column"),
+                .product(name: "Cardinal", package: "swift-cardinal"),
+                .product(name: "Tagged", package: "swift-tagged"),
                 .product(
-                    name: "Ownership Shared Primitive",
-                    package: "swift-ownership-shared"
-                ),
-                .product(
-                    name: "Buffer Linear Primitive",
-                    package: "swift-buffer-linear"
-                ),
-                .product(
-                    name: "Buffer Linear",
-                    package: "swift-buffer-linear"
-                ),
-                .product(
-                    name: "Storage Contiguous",
-                    package: "swift-storage"
-                ),
-                .product(name: "Memory Heap", package: "swift-memory-heap"),
-
-                .product(
-                    name: "Memory Allocator Primitive",
-                    package: "swift-memory-allocation"
+                    name: "Byte Ownership",
+                    package: "swift-byte-ownership"
                 ),
                 .product(name: "Cursor", package: "swift-cursor"),
-                .product(name: "Cursor Primitive", package: "swift-cursor"),
                 .product(
                     name: "Memory Cursor",
                     package: "swift-memory-cursor"
                 ),
-                .product(name: "Index", package: "swift-index"),
                 .product(name: "Collection", package: "swift-collection"),
-
-                .product(name: "Span Protocol", package: "swift-span"),
+                .product(name: "Span", package: "swift-span"),
             ]
         ),
         .target(
             name: "Byte Parser Test Support",
             dependencies: [
                 "Byte Parser",
-                .product(name: "Byte Test Support", package: "swift-byte"),
-                .product(name: "Input", package: "swift-input"),
-                .product(name: "Index Test Support", package: "swift-index"),
             ],
             path: "Tests/Support"
         ),

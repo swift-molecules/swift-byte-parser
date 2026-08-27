@@ -1,13 +1,10 @@
-internal import Array
 public import Byte
 public import Either
-public import Parser_EndOfInput
-public import Parser_Match
 public import Parser
 
 extension Byte.Literal {
 
-    public struct Parser<Input: Input.Input.Streaming>
+    public struct Parser<Input: __ParserInput.Streaming>
     where Input.Element == Byte {
         @usableFromInline
         let bytes: [Byte]
@@ -34,12 +31,12 @@ extension Byte.Literal {
     }
 }
 
-extension Byte.Literal.Parser: Parser.Parser.`Protocol` {
+extension Byte.Literal.Parser: Parser.`Protocol` {
 
     public typealias Output = Void
 
     public typealias Failure = Either<
-        Parser.Parser.EndOfInput.Error, Parser.Parser.Match.Error
+        Parser.EndOfInput.Error, Parser.Match.Error
     >
 
     public typealias Body = Never
