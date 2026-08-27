@@ -1,4 +1,4 @@
-import Byte_Parser_Primitives_Test_Support
+import Byte_Parser_Test_Support
 import Testing
 
 private let basePattern: [Byte] = [0x41, 0x42, 0x43, 0x44]

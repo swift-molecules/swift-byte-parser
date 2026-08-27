@@ -1,12 +1,12 @@
-public import Byte_Primitives
-public import Either_Primitives
-public import Parser_EndOfInput_Primitives
-public import Parser_Match_Primitives
-public import Parser_Primitives
+public import Byte
+public import Either
+public import Parser_EndOfInput
+public import Parser_Match
+public import Parser
 
 extension Byte {
 
-    public struct Parser<Input: Input_Primitives.Input.Streaming>
+    public struct Parser<Input: Input.Input.Streaming>
     where Input.Element == Byte {
         @usableFromInline
         let expected: Byte
@@ -18,12 +18,12 @@ extension Byte {
     }
 }
 
-extension Byte.Parser: Parser_Primitives.Parser.`Protocol` {
+extension Byte.Parser: Parser.Parser.`Protocol` {
 
     public typealias Output = Void
 
     public typealias Failure = Either<
-        Parser_Primitives.Parser.EndOfInput.Error, Parser_Primitives.Parser.Match.Error
+        Parser.Parser.EndOfInput.Error, Parser.Parser.Match.Error
     >
 
     public typealias Body = Never

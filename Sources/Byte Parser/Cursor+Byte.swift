@@ -1,7 +1,7 @@
-public import Byte_Primitives
-public import Cursor_Primitives
-public import Memory_Cursor_Primitives
-public import Span_Protocol_Primitives
+public import Byte
+public import Cursor
+public import Memory_Cursor
+public import Span_Protocol
 
 extension Cursor where DomainTag == Byte {
 

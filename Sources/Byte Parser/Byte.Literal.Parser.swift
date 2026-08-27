@@ -1,13 +1,13 @@
-internal import Array_Primitives
-public import Byte_Primitives
-public import Either_Primitives
-public import Parser_EndOfInput_Primitives
-public import Parser_Match_Primitives
-public import Parser_Primitives
+internal import Array
+public import Byte
+public import Either
+public import Parser_EndOfInput
+public import Parser_Match
+public import Parser
 
 extension Byte.Literal {
 
-    public struct Parser<Input: Input_Primitives.Input.Streaming>
+    public struct Parser<Input: Input.Input.Streaming>
     where Input.Element == Byte {
         @usableFromInline
         let bytes: [Byte]
@@ -34,12 +34,12 @@ extension Byte.Literal {
     }
 }
 
-extension Byte.Literal.Parser: Parser_Primitives.Parser.`Protocol` {
+extension Byte.Literal.Parser: Parser.Parser.`Protocol` {
 
     public typealias Output = Void
 
     public typealias Failure = Either<
-        Parser_Primitives.Parser.EndOfInput.Error, Parser_Primitives.Parser.Match.Error
+        Parser.Parser.EndOfInput.Error, Parser.Parser.Match.Error
     >
 
     public typealias Body = Never

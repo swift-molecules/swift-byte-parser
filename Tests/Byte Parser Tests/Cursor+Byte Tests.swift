@@ -1,4 +1,4 @@
-import Byte_Parser_Primitives_Test_Support
+import Byte_Parser_Test_Support
 import Testing
 
 @Suite

@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "swift-byte-parser-primitives",
+    name: "swift-byte-parser",
     platforms: [
         .macOS(.v27),
         .iOS(.v27),
@@ -13,150 +13,150 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "Byte Parser Primitives",
-            targets: ["Byte Parser Primitives"]
+            name: "Byte Parser",
+            targets: ["Byte Parser"]
         ),
         .library(
-            name: "Byte Parser Primitives Test Support",
-            targets: ["Byte Parser Primitives Test Support"]
+            name: "Byte Parser Test Support",
+            targets: ["Byte Parser Test Support"]
         ),
     ],
     dependencies: [
         .package(
-            url: "https://github.com/swift-primitives/swift-parser-primitives.git",
+            url: "https://github.com/swift-molecules/swift-parser.git",
             branch: "main"
         ),
 
         .package(
-            url: "https://github.com/swift-primitives/swift-byte-primitives.git",
+            url: "https://github.com/swift-molecules/swift-byte.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-either-primitives.git",
+            url: "https://github.com/swift-molecules/swift-either.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-input-primitives.git",
+            url: "https://github.com/swift-molecules/swift-input.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-array-primitives.git",
+            url: "https://github.com/swift-molecules/swift-array.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-column-primitives.git",
+            url: "https://github.com/swift-molecules/swift-column.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-ownership-shared-primitives.git",
+            url: "https://github.com/swift-molecules/swift-ownership-shared.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-buffer-linear-primitives.git",
+            url: "https://github.com/swift-molecules/swift-buffer-linear.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-storage-primitives.git",
+            url: "https://github.com/swift-molecules/swift-storage.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-memory-heap-primitives.git",
+            url: "https://github.com/swift-molecules/swift-memory-heap.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-memory-allocation-primitives.git",
+            url: "https://github.com/swift-molecules/swift-memory-allocation.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-cursor-primitives.git",
+            url: "https://github.com/swift-molecules/swift-cursor.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-memory-cursor-primitives.git",
+            url: "https://github.com/swift-molecules/swift-memory-cursor.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-index-primitives.git",
+            url: "https://github.com/swift-molecules/swift-index.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-collection-primitives.git",
+            url: "https://github.com/swift-molecules/swift-collection.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-span-primitives.git",
+            url: "https://github.com/swift-molecules/swift-span.git",
             branch: "main"
         ),
     ],
     targets: [
         .target(
-            name: "Byte Parser Primitives",
+            name: "Byte Parser",
             dependencies: [
-                .product(name: "Parser Primitives", package: "swift-parser-primitives"),
-                .product(name: "Parser Match Primitives", package: "swift-parser-primitives"),
-                .product(name: "Parser EndOfInput Primitives", package: "swift-parser-primitives"),
-                .product(name: "Parser Take Primitives", package: "swift-parser-primitives"),
-                .product(name: "Byte Primitives", package: "swift-byte-primitives"),
+                .product(name: "Parser", package: "swift-parser"),
+                .product(name: "Parser Match", package: "swift-parser"),
+                .product(name: "Parser EndOfInput", package: "swift-parser"),
+                .product(name: "Parser Take", package: "swift-parser"),
+                .product(name: "Byte", package: "swift-byte"),
                 .product(
-                    name: "Byte Primitives Standard Library Integration",
-                    package: "swift-byte-primitives"
+                    name: "Byte Standard Library Integration",
+                    package: "swift-byte"
                 ),
-                .product(name: "Either Primitives", package: "swift-either-primitives"),
-                .product(name: "Input Primitives", package: "swift-input-primitives"),
-                .product(name: "Array Primitives", package: "swift-array-primitives"),
+                .product(name: "Either", package: "swift-either"),
+                .product(name: "Input", package: "swift-input"),
+                .product(name: "Array", package: "swift-array"),
 
-                .product(name: "Array Primitive", package: "swift-array-primitives"),
+                .product(name: "Array Primitive", package: "swift-array"),
 
-                .product(name: "Column Primitives", package: "swift-column-primitives"),
+                .product(name: "Column", package: "swift-column"),
                 .product(
                     name: "Ownership Shared Primitive",
-                    package: "swift-ownership-shared-primitives"
+                    package: "swift-ownership-shared"
                 ),
                 .product(
                     name: "Buffer Linear Primitive",
-                    package: "swift-buffer-linear-primitives"
+                    package: "swift-buffer-linear"
                 ),
                 .product(
-                    name: "Buffer Linear Primitives",
-                    package: "swift-buffer-linear-primitives"
+                    name: "Buffer Linear",
+                    package: "swift-buffer-linear"
                 ),
                 .product(
-                    name: "Storage Contiguous Primitives",
-                    package: "swift-storage-primitives"
+                    name: "Storage Contiguous",
+                    package: "swift-storage"
                 ),
-                .product(name: "Memory Heap Primitives", package: "swift-memory-heap-primitives"),
+                .product(name: "Memory Heap", package: "swift-memory-heap"),
 
                 .product(
                     name: "Memory Allocator Primitive",
-                    package: "swift-memory-allocation-primitives"
+                    package: "swift-memory-allocation"
                 ),
-                .product(name: "Cursor Primitives", package: "swift-cursor-primitives"),
-                .product(name: "Cursor Primitive", package: "swift-cursor-primitives"),
+                .product(name: "Cursor", package: "swift-cursor"),
+                .product(name: "Cursor Primitive", package: "swift-cursor"),
                 .product(
-                    name: "Memory Cursor Primitives",
-                    package: "swift-memory-cursor-primitives"
+                    name: "Memory Cursor",
+                    package: "swift-memory-cursor"
                 ),
-                .product(name: "Index Primitives", package: "swift-index-primitives"),
-                .product(name: "Collection Primitives", package: "swift-collection-primitives"),
+                .product(name: "Index", package: "swift-index"),
+                .product(name: "Collection", package: "swift-collection"),
 
-                .product(name: "Span Protocol Primitives", package: "swift-span-primitives"),
+                .product(name: "Span Protocol", package: "swift-span"),
             ]
         ),
         .target(
-            name: "Byte Parser Primitives Test Support",
+            name: "Byte Parser Test Support",
             dependencies: [
-                "Byte Parser Primitives",
-                .product(name: "Byte Primitives Test Support", package: "swift-byte-primitives"),
-                .product(name: "Input Primitives", package: "swift-input-primitives"),
-                .product(name: "Index Primitives Test Support", package: "swift-index-primitives"),
+                "Byte Parser",
+                .product(name: "Byte Test Support", package: "swift-byte"),
+                .product(name: "Input", package: "swift-input"),
+                .product(name: "Index Test Support", package: "swift-index"),
             ],
             path: "Tests/Support"
         ),
         .testTarget(
-            name: "Byte Parser Primitives Tests",
+            name: "Byte Parser Tests",
             dependencies: [
-                "Byte Parser Primitives",
-                "Byte Parser Primitives Test Support",
+                "Byte Parser",
+                "Byte Parser Test Support",
             ]
         ),
     ],

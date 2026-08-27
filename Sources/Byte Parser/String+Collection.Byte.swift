@@ -1,5 +1,5 @@
-public import Byte_Primitives
-public import Collection_Primitives
+public import Byte
+public import Collection
 
 extension Swift.String {
 

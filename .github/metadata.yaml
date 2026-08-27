@@ -1,7 +1,7 @@
 # .github/metadata.yaml
-description: "Byte.Parser — byte-domain parser combinators (single-byte and byte-literal matchers) over a streaming byte input, built on swift-parser-primitives."
+description: "Byte.Parser — byte-domain parser combinators (single-byte and byte-literal matchers) over a streaming byte input, built on swift-parser."
 topics:
-  - primitives
+  - molecules
   - parser
   - byte
   - parser-combinators

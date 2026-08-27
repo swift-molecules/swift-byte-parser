@@ -1,21 +1,21 @@
 public import Array_Primitive
-public import Array_Primitives
+public import Array
 public import Buffer_Linear_Primitive
-public import Buffer_Linear_Primitives
-import Byte_Primitives
-import Column_Primitives
-public import Input_Primitives
+public import Buffer_Linear
+import Byte
+import Column
+public import Input
 public import Memory_Allocator_Primitive
-public import Memory_Heap_Primitives
+public import Memory_Heap
 public import Ownership_Shared_Primitive
-public import Storage_Contiguous_Primitives
+public import Storage_Contiguous
 
 extension Byte {
 
-    public typealias Input = Input_Primitives.Input.Slice<Array<Byte>.Shared>
+    public typealias Input = Input.Input.Slice<Array<Byte>.Shared>
 }
 
-extension Input_Primitives.Input.Slice where Base == Array<Byte>.Shared {
+extension Input.Input.Slice where Base == Array<Byte>.Shared {
 
     @inlinable
     public init(_ bytes: [Byte]) {
