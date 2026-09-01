@@ -1,4 +1,5 @@
 public import Byte
+public import Byte_Protocol
 public import Collection
 
 extension Swift.String {

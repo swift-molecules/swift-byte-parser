@@ -35,35 +35,23 @@ let package = Package(
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-atoms/swift-input.git",
+            url: "https://github.com/swift-atoms/swift-cursor.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-atoms/swift-cardinal.git",
+            url: "https://github.com/swift-atoms/swift-checkpoint.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-atoms/swift-tagged.git",
+            url: "https://github.com/swift-atoms/swift-iterator.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-byte-ownership.git",
-            branch: "main"
-        ),
-        .package(
-            url: "https://github.com/swift-molecules/swift-cursor.git",
-            branch: "main"
-        ),
-        .package(
-            url: "https://github.com/swift-molecules/swift-memory-cursor.git",
+            url: "https://github.com/swift-molecules/swift-cursor-parser.git",
             branch: "main"
         ),
         .package(
             url: "https://github.com/swift-atoms/swift-collection.git",
-            branch: "main"
-        ),
-        .package(
-            url: "https://github.com/swift-atoms/swift-span.git",
             branch: "main"
         ),
     ],
@@ -72,22 +60,16 @@ let package = Package(
             name: "Byte Parser",
             dependencies: [
                 .product(name: "Parser", package: "swift-parser"),
+                .product(name: "Parser Match", package: "swift-parser"),
                 .product(name: "Byte", package: "swift-byte"),
+                .product(name: "Byte Protocol", package: "swift-byte"),
                 .product(name: "Either", package: "swift-either"),
-                .product(name: "Input", package: "swift-input"),
-                .product(name: "Cardinal", package: "swift-cardinal"),
-                .product(name: "Tagged", package: "swift-tagged"),
-                .product(
-                    name: "Byte Ownership",
-                    package: "swift-byte-ownership"
-                ),
+                .product(name: "Checkpoint", package: "swift-checkpoint"),
                 .product(name: "Cursor", package: "swift-cursor"),
-                .product(
-                    name: "Memory Cursor",
-                    package: "swift-memory-cursor"
-                ),
+                .product(name: "Cursor Parser First", package: "swift-cursor-parser"),
+                .product(name: "Iterator", package: "swift-iterator"),
+                .product(name: "Iterator Protocol", package: "swift-iterator"),
                 .product(name: "Collection", package: "swift-collection"),
-                .product(name: "Span", package: "swift-span"),
             ]
         ),
         .target(

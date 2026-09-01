@@ -1,11 +1,16 @@
 public import Byte
+public import Byte_Protocol
+public import Cursor_Parser_First
 public import Either
+public import Iterator
+public import Iterator_Protocol
 public import Parser
+public import Parser_Match
 
 extension Byte.Literal {
 
-    public struct Parser<Input: __ParserInput.Streaming>
-    where Input.Element == Byte {
+    public struct Parser<Input: Iterator.`Protocol`>
+    where Input.Element == Byte, Input.Failure == Never {
         @usableFromInline
         let bytes: [Byte]
 
@@ -44,7 +49,7 @@ extension Byte.Literal.Parser: Parser.`Protocol` {
     @inlinable
     public func parse(_ input: inout Input) throws(Failure) {
         for expected in bytes {
-            guard !input.isEmpty else {
+            guard let actual = input.next() else {
                 throw .left(
                     .unexpected(
                         expected:
@@ -52,8 +57,6 @@ extension Byte.Literal.Parser: Parser.`Protocol` {
                     )
                 )
             }
-
-            let actual = try! input.advance()
             guard actual == expected else {
                 throw .right(
                     .byteMismatch(expected: [expected.underlying], found: [actual.underlying])

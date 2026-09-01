@@ -1,7 +1,8 @@
 import Byte
-public import Input
-
-public typealias __ByteParserInput = Input
+public import Checkpoint
+public import Cursor
+public import Iterator
+public import Iterator_Protocol
 
 extension Byte {
 
@@ -50,11 +51,13 @@ extension Byte {
     }
 }
 
-extension Byte.Input: __ByteParserInput.`Protocol` {
+extension Byte.Input: Cursor.Positioned {
 
     public typealias Checkpoint = Int
 
     public typealias Element = Byte
+
+    public typealias Failure = Never
 
     @inlinable
     public var count: Int { storage.count - position }
@@ -72,9 +75,8 @@ extension Byte.Input: __ByteParserInput.`Protocol` {
     public var bounds: ClosedRange<Checkpoint> { 0...storage.count }
 
     @inlinable
-    @discardableResult
-    public mutating func advance() throws(__ByteParserInput.Stream.Error) -> Byte {
-        guard !isEmpty else { throw .empty }
+    public mutating func next() -> Byte? {
+        guard !isEmpty else { return nil }
         let byte = storage[position]
         position += 1
         return byte
@@ -93,7 +95,7 @@ extension Byte.Input: __ByteParserInput.`Protocol` {
     }
 }
 
-extension Byte.Input: __ByteParserInput.Access.Random {
+extension Byte.Input {
 
     @inlinable
     public subscript(offset offset: Int) -> Byte {
