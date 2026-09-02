@@ -12,17 +12,17 @@ struct `Byte.Parser Tests` {
 extension `Byte.Parser Tests`.Unit {
     @Test
     func `matches expected byte and advances input`() throws(Byte.Parser<Byte.Input>.Failure) {
-        let parser = Byte.Parser<Byte.Input>(0x41)
+        let parser = Byte.Parser<Byte.Input>(Byte(bitPattern: 0x41))
         var input = Byte.Input([0x41, 0x42, 0x43])
 
         try parser.parse(&input)
 
-        #expect(input.first == 0x42)
+        #expect(input.first == Byte(bitPattern: 0x42))
     }
 
     @Test
     func `consumes single byte from input`() throws(Byte.Parser<Byte.Input>.Failure) {
-        let parser = Byte.Parser<Byte.Input>(0xFF)
+        let parser = Byte.Parser<Byte.Input>(Byte(bitPattern: 0xFF))
         var input = Byte.Input([0xFF])
 
         try parser.parse(&input)
@@ -32,7 +32,7 @@ extension `Byte.Parser Tests`.Unit {
 
     @Test
     func `init takes Byte type at API surface`() throws(Byte.Parser<Byte.Input>.Failure) {
-        let expected: Byte = 0x42
+        let expected = Byte(bitPattern: 0x42)
         let parser = Byte.Parser<Byte.Input>(expected)
         var input = Byte.Input([0x42])
 
@@ -42,11 +42,9 @@ extension `Byte.Parser Tests`.Unit {
     }
 
     @Test
-    func `Byte literal flows through ExpressibleByIntegerLiteral`() throws(Byte.Parser<Byte.Input>
-        .Failure)
-    {
+    func `a bit pattern flows through parser init`() throws(Byte.Parser<Byte.Input>.Failure) {
 
-        let parser = Byte.Parser<Byte.Input>(0x55)
+        let parser = Byte.Parser<Byte.Input>(Byte(bitPattern: 0x55))
         var input = Byte.Input([0x55])
         try parser.parse(&input)
         #expect(input.isEmpty)
@@ -56,7 +54,7 @@ extension `Byte.Parser Tests`.Unit {
 extension `Byte.Parser Tests`.`Edge Case` {
     @Test
     func `fails on empty input with EndOfInput error`() {
-        let parser = Byte.Parser<Byte.Input>(0x41)
+        let parser = Byte.Parser<Byte.Input>(Byte(bitPattern: 0x41))
         var input = Byte.Input([])
 
         #expect {
@@ -71,7 +69,7 @@ extension `Byte.Parser Tests`.`Edge Case` {
 
     @Test
     func `fails on wrong byte with Match error`() {
-        let parser = Byte.Parser<Byte.Input>(0x41)
+        let parser = Byte.Parser<Byte.Input>(Byte(bitPattern: 0x41))
         var input = Byte.Input([0x42])
 
         #expect {
@@ -86,15 +84,15 @@ extension `Byte.Parser Tests`.`Edge Case` {
 
     @Test
     func `zero byte parses correctly`() throws(Byte.Parser<Byte.Input>.Failure) {
-        let parser = Byte.Parser<Byte.Input>(0x00)
+        let parser = Byte.Parser<Byte.Input>(Byte(bitPattern: 0x00))
         var input = Byte.Input([0x00, 0x01])
         try parser.parse(&input)
-        #expect(input.first == 0x01)
+        #expect(input.first == Byte(bitPattern: 0x01))
     }
 
     @Test
     func `max byte parses correctly`() throws(Byte.Parser<Byte.Input>.Failure) {
-        let parser = Byte.Parser<Byte.Input>(0xFF)
+        let parser = Byte.Parser<Byte.Input>(Byte(bitPattern: 0xFF))
         var input = Byte.Input([0xFF])
         try parser.parse(&input)
         #expect(input.isEmpty)
@@ -103,16 +101,20 @@ extension `Byte.Parser Tests`.`Edge Case` {
 
 extension `Byte.Parser Tests`.Integration {
     @Test
-    func `Byte.zero constant flows through parser init`() throws(Byte.Parser<Byte.Input>.Failure) {
-        let parser = Byte.Parser<Byte.Input>(Byte.zero)
+    func `the zero bit pattern flows through parser init`() throws(
+        Byte.Parser<Byte.Input>.Failure
+    ) {
+        let parser = Byte.Parser<Byte.Input>(Byte(bitPattern: 0x00))
         var input = Byte.Input([0x00])
         try parser.parse(&input)
         #expect(input.isEmpty)
     }
 
     @Test
-    func `Byte.max constant flows through parser init`() throws(Byte.Parser<Byte.Input>.Failure) {
-        let parser = Byte.Parser<Byte.Input>(Byte.max)
+    func `the all ones bit pattern flows through parser init`() throws(
+        Byte.Parser<Byte.Input>.Failure
+    ) {
+        let parser = Byte.Parser<Byte.Input>(Byte(bitPattern: 0xFF))
         var input = Byte.Input([0xFF])
         try parser.parse(&input)
         #expect(input.isEmpty)
@@ -120,7 +122,7 @@ extension `Byte.Parser Tests`.Integration {
 
     @Test(arguments: UInt8.min...UInt8.max)
     func `parses byte value`(_ i: UInt8) throws(Byte.Parser<Byte.Input>.Failure) {
-        let parser = Byte.Parser<Byte.Input>(Byte(i))
+        let parser = Byte.Parser<Byte.Input>(Byte(bitPattern: i))
         var input = Byte.Input([i])
         try parser.parse(&input)
         #expect(input.isEmpty)

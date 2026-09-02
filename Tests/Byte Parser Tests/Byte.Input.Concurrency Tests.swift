@@ -1,7 +1,8 @@
 import Byte_Parser_Test_Support
 import Testing
 
-private let basePattern: [Byte] = [0x41, 0x42, 0x43, 0x44]
+private let basePattern: [Byte] = ([0x41, 0x42, 0x43, 0x44] as [UInt8])
+    .map(Byte.init(bitPattern:))
 
 private func makePattern(repeats: Int) -> [Byte] {
     var out: [Byte] = []
@@ -11,7 +12,7 @@ private func makePattern(repeats: Int) -> [Byte] {
 }
 
 private func mismatch(for expected: Byte) -> Byte {
-    expected == 0x00 ? 0x01 : 0x00
+    expected == Byte(bitPattern: 0x00) ? Byte(bitPattern: 0x01) : Byte(bitPattern: 0x00)
 }
 
 @Suite
@@ -62,7 +63,7 @@ extension `Byte.Input Concurrency Tests`.Integration {
         }
         #expect(outcomes.count == width)
         #expect(outcomes.allSatisfy { $0 })
-        #expect(source.first == 0x41)
+        #expect(source.first == Byte(bitPattern: 0x41))
         #expect(!source.isEmpty)
     }
 
@@ -95,6 +96,6 @@ extension `Byte.Input Concurrency Tests`.Integration {
         }
         #expect(outcomes.count == 16)
         #expect(outcomes.allSatisfy { $0 })
-        #expect(source.first == 0x41)
+        #expect(source.first == Byte(bitPattern: 0x41))
     }
 }

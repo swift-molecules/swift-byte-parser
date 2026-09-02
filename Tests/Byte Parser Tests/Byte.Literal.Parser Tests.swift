@@ -14,12 +14,14 @@ extension `Byte.Literal.Parser Tests`.Unit {
     func `matches byte sequence and advances input`() throws(Byte.Literal.Parser<Byte.Input>
         .Failure)
     {
-        let parser = Byte.Literal.Parser<Byte.Input>([0x48, 0x65, 0x6C])
+        let parser = Byte.Literal.Parser<Byte.Input>(
+            ([0x48, 0x65, 0x6C] as [UInt8]).map(Byte.init(bitPattern:))
+        )
         var input = Byte.Input([0x48, 0x65, 0x6C, 0x6C, 0x6F])
 
         try parser.parse(&input)
 
-        #expect(input.first == 0x6C)
+        #expect(input.first == Byte(bitPattern: 0x6C))
     }
 
     @Test
@@ -31,7 +33,7 @@ extension `Byte.Literal.Parser Tests`.Unit {
 
         try parser.parse(&input)
 
-        #expect(input.first == Byte(UInt8(ascii: "!")))
+        #expect(input.first == Byte(bitPattern: UInt8(ascii: "!")))
     }
 
     @Test
@@ -54,7 +56,7 @@ extension `Byte.Literal.Parser Tests`.`Edge Case` {
 
         try parser.parse(&input)
 
-        #expect(input.first == 0x01)
+        #expect(input.first == Byte(bitPattern: 0x01))
     }
 
     @Test
@@ -84,7 +86,7 @@ extension `Byte.Literal.Parser Tests`.Integration {
         .Failure)
     {
         let prefix: Byte.Literal.Parser<Byte.Input> = "hi"
-        let suffix = Byte.Parser<Byte.Input>(0x21)
+        let suffix = Byte.Parser<Byte.Input>(Byte(bitPattern: 0x21))
         var input = Byte.Input(utf8: "hi!")
 
         try prefix.parse(&input)
@@ -95,7 +97,7 @@ extension `Byte.Literal.Parser Tests`.Integration {
 
     @Test
     func `parses long literal`() throws(Byte.Literal.Parser<Byte.Input>.Failure) {
-        let bytes = Swift.Array(repeating: Byte(0x61), count: 1024)
+        let bytes = Swift.Array(repeating: Byte(bitPattern: 0x61), count: 1024)
         let parser = Byte.Literal.Parser<Byte.Input>(bytes)
         var input = Byte.Input(bytes)
 

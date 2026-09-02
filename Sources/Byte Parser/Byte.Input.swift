@@ -28,7 +28,7 @@ extension Byte {
         @_disfavoredOverload
         @inlinable
         public init(_ bytes: [UInt8]) {
-            self.storage = ContiguousArray(bytes.lazy.map(Byte.init))
+            self.storage = ContiguousArray(bytes.lazy.map(Byte.init(bitPattern:)))
             self.position = 0
         }
 

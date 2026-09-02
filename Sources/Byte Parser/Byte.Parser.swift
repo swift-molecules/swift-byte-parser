@@ -1,5 +1,4 @@
 public import Byte
-public import Byte_Protocol
 public import Cursor_Parser_First
 public import Either
 public import Iterator
@@ -36,12 +35,12 @@ extension Byte.Parser: Parser.`Protocol` {
         guard let actual = input.next() else {
             throw .left(
                 .unexpected(
-                    expected: "byte 0x\(String(expected.underlying, radix: 16, uppercase: true))"
+                    expected: "byte 0x\(String(expected.bitPattern, radix: 16, uppercase: true))"
                 )
             )
         }
         guard actual == expected else {
-            throw .right(.byteMismatch(expected: [expected.underlying], found: [actual.underlying]))
+            throw .right(.byteMismatch(expected: [expected.bitPattern], found: [actual.bitPattern]))
         }
     }
 }

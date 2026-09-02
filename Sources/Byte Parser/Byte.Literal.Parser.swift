@@ -1,5 +1,4 @@
 public import Byte
-public import Byte_Protocol
 public import Cursor_Parser_First
 public import Either
 public import Iterator
@@ -29,7 +28,7 @@ extension Byte.Literal {
                 var typed: [Byte] = []
                 typed.reserveCapacity(buf.count)
 
-                for unsafe byte in unsafe buf { typed.append(Byte(byte)) }
+                for unsafe byte in unsafe buf { typed.append(Byte(bitPattern: byte)) }
                 return typed
             })
         }
@@ -53,13 +52,13 @@ extension Byte.Literal.Parser: Parser.`Protocol` {
                 throw .left(
                     .unexpected(
                         expected:
-                            "byte 0x\(String(expected.underlying, radix: 16, uppercase: true))"
+                            "byte 0x\(String(expected.bitPattern, radix: 16, uppercase: true))"
                     )
                 )
             }
             guard actual == expected else {
                 throw .right(
-                    .byteMismatch(expected: [expected.underlying], found: [actual.underlying])
+                    .byteMismatch(expected: [expected.bitPattern], found: [actual.bitPattern])
                 )
             }
         }
@@ -71,7 +70,7 @@ extension Byte.Literal.Parser: ExpressibleByStringLiteral {
     @inlinable
     public init(stringLiteral value: String) {
         var typed: [Byte] = []
-        for byte in value.utf8 { typed.append(Byte(byte)) }
+        for byte in value.utf8 { typed.append(Byte(bitPattern: byte)) }
         self.bytes = typed
     }
 }
@@ -81,7 +80,7 @@ extension Byte.Literal.Parser: ExpressibleByUnicodeScalarLiteral {
     @inlinable
     public init(unicodeScalarLiteral value: Unicode.Scalar) {
         var typed: [Byte] = []
-        for byte in String(value).utf8 { typed.append(Byte(byte)) }
+        for byte in String(value).utf8 { typed.append(Byte(bitPattern: byte)) }
         self.bytes = typed
     }
 }
@@ -91,7 +90,7 @@ extension Byte.Literal.Parser: ExpressibleByExtendedGraphemeClusterLiteral {
     @inlinable
     public init(extendedGraphemeClusterLiteral value: Character) {
         var typed: [Byte] = []
-        for byte in String(value).utf8 { typed.append(Byte(byte)) }
+        for byte in String(value).utf8 { typed.append(Byte(bitPattern: byte)) }
         self.bytes = typed
     }
 }

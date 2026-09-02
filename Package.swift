@@ -62,7 +62,6 @@ let package = Package(
                 .product(name: "Parser", package: "swift-parser"),
                 .product(name: "Parser Match", package: "swift-parser"),
                 .product(name: "Byte", package: "swift-byte"),
-                .product(name: "Byte Protocol", package: "swift-byte"),
                 .product(name: "Either", package: "swift-either"),
                 .product(name: "Checkpoint", package: "swift-checkpoint"),
                 .product(name: "Cursor", package: "swift-cursor"),
