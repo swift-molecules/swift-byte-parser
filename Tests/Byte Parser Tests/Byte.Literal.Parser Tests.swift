@@ -82,9 +82,7 @@ extension `Byte.Literal.Parser Tests`.`Edge Case` {
 
 extension `Byte.Literal.Parser Tests`.Integration {
     @Test
-    func `Byte.Literal.Parser composes with Byte.Parser`() throws(Byte.Literal.Parser<Byte.Input>
-        .Failure)
-    {
+    func `Byte.Literal.Parser composes with Byte.Parser`() throws {
         let prefix: Byte.Literal.Parser<Byte.Input> = "hi"
         let suffix = Byte.Parser<Byte.Input>(Byte(bitPattern: 0x21))
         var input = Byte.Input(utf8: "hi!")

@@ -68,7 +68,7 @@ extension `Byte.Parser Tests`.`Edge Case` {
     }
 
     @Test
-    func `fails on wrong byte with Match error`() {
+    func `fails on wrong byte with mismatch error`() {
         let parser = Byte.Parser<Byte.Input>(Byte(bitPattern: 0x41))
         var input = Byte.Input([0x42])
 

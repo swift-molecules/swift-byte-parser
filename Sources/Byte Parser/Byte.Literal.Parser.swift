@@ -4,7 +4,6 @@ public import Either
 public import Iterator
 public import Iterator_Protocol
 public import Parser
-public import Parser_Match
 
 extension Byte.Literal {
 
@@ -35,12 +34,18 @@ extension Byte.Literal {
     }
 }
 
+extension Byte.Literal.Parser {
+    public enum Error: Swift.Error, Equatable {
+        case mismatch(expected: [Byte], found: [Byte])
+    }
+}
+
 extension Byte.Literal.Parser: Parser.`Protocol` {
 
     public typealias Output = Void
 
     public typealias Failure = Either<
-        Parser.EndOfInput.Error, Parser.Match.Error
+        Parser.EndOfInput.Error, Byte.Literal.Parser<Input>.Error
     >
 
     public typealias Body = Never
@@ -58,7 +63,7 @@ extension Byte.Literal.Parser: Parser.`Protocol` {
             }
             guard actual == expected else {
                 throw .right(
-                    .byteMismatch(expected: [expected.bitPattern], found: [actual.bitPattern])
+                    .mismatch(expected: [expected], found: [actual])
                 )
             }
         }

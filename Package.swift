@@ -60,7 +60,6 @@ let package = Package(
             name: "Byte Parser",
             dependencies: [
                 .product(name: "Parser", package: "swift-parser"),
-                .product(name: "Parser Match", package: "swift-parser"),
                 .product(name: "Byte", package: "swift-byte"),
                 .product(name: "Either", package: "swift-either"),
                 .product(name: "Checkpoint", package: "swift-checkpoint"),
