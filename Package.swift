@@ -47,7 +47,7 @@ let package = Package(
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-cursor-parser.git",
+            url: "https://github.com/swift-molecules/swift-iterator-parser.git",
             branch: "main"
         ),
         .package(
@@ -64,7 +64,7 @@ let package = Package(
                 .product(name: "Either", package: "swift-either"),
                 .product(name: "Checkpoint", package: "swift-checkpoint"),
                 .product(name: "Cursor", package: "swift-cursor"),
-                .product(name: "Cursor Parser First", package: "swift-cursor-parser"),
+                .product(name: "Iterator Parser", package: "swift-iterator-parser"),
                 .product(name: "Iterator", package: "swift-iterator"),
                 .product(name: "Iterator Protocol", package: "swift-iterator"),
                 .product(name: "Collection", package: "swift-collection"),

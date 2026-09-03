@@ -51,7 +51,7 @@ extension Byte {
     }
 }
 
-extension Byte.Input: Cursor.Positioned {
+extension Byte.Input: Cursor.`Protocol` {
 
     public typealias Checkpoint = Int
 
@@ -72,9 +72,6 @@ extension Byte.Input: Cursor.Positioned {
     public var checkpoint: Checkpoint { position }
 
     @inlinable
-    public var bounds: ClosedRange<Checkpoint> { 0...storage.count }
-
-    @inlinable
     public mutating func next() -> Byte? {
         guard !isEmpty else { return nil }
         let byte = storage[position]
@@ -83,23 +80,9 @@ extension Byte.Input: Cursor.Positioned {
     }
 
     @inlinable
-    public mutating func advance(by count: Int) {
-        precondition(count >= 0 && count <= self.count)
-        position += count
-    }
-
-    @inlinable
     public mutating func seek(to checkpoint: Checkpoint) {
-        precondition(bounds.contains(checkpoint))
+        precondition(checkpoint >= 0 && checkpoint <= storage.count)
         position = checkpoint
-    }
-}
-
-extension Byte.Input {
-
-    @inlinable
-    public subscript(offset offset: Int) -> Byte {
-        storage[position + offset]
     }
 }
 

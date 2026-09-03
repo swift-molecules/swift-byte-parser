@@ -1,4 +1,5 @@
 import Byte_Parser_Test_Support
+import Iterator_Parser
 import Testing
 
 private let basePattern: [Byte] = ([0x41, 0x42, 0x43, 0x44] as [UInt8])
@@ -37,8 +38,8 @@ extension `Byte.Input Concurrency Tests`.Integration {
 
                         var probe = mine
                         let failed: Bool
-                        do throws(Byte.Parser<Byte.Input>.Failure) {
-                            try Byte.Parser<Byte.Input>(mismatch(for: expected)).parse(&probe)
+                        do throws([Byte].Parser<Byte.Input>.Error) {
+                            try [Byte].Parser<Byte.Input>([mismatch(for: expected)]).parse(&probe)
                             failed = false
                         } catch {
                             failed = true
@@ -46,8 +47,8 @@ extension `Byte.Input Concurrency Tests`.Integration {
                         good = good && failed
                         good = good && (mine.first == expected)
                         let advanced: Bool
-                        do throws(Byte.Parser<Byte.Input>.Failure) {
-                            try Byte.Parser<Byte.Input>(expected).parse(&mine)
+                        do throws([Byte].Parser<Byte.Input>.Error) {
+                            try [Byte].Parser<Byte.Input>([expected]).parse(&mine)
                             advanced = true
                         } catch {
                             advanced = false
@@ -78,8 +79,8 @@ extension `Byte.Input Concurrency Tests`.Integration {
                     var good = true
                     (0..<depth).forEach { i in
                         let advanced: Bool
-                        do throws(Byte.Parser<Byte.Input>.Failure) {
-                            try Byte.Parser<Byte.Input>(pattern[i]).parse(&mine)
+                        do throws([Byte].Parser<Byte.Input>.Error) {
+                            try [Byte].Parser<Byte.Input>([pattern[i]]).parse(&mine)
                             advanced = true
                         } catch {
                             advanced = false
